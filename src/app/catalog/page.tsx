@@ -1,5 +1,6 @@
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
+import Link from 'next/link';
 
 export default async function Index() {
   const supabase = createServerComponentClient({ cookies });
@@ -10,7 +11,9 @@ export default async function Index() {
       <ul className="my-auto text-foreground">
         {products?.map((product) => (
           <li key={product.id}>
-            {product.name} , price: {product['price_info.total_price'] / 100}
+            <Link href={`/catalog/${product.id}`}>
+              {product.name} , price: {product['price_info.total_price'] / 100}
+            </Link>
           </li>
         ))}
       </ul>

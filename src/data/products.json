@@ -1,0 +1,77 @@
+[
+  {
+    "title": "JACKSON POLLOCK, UNTITLED, 1951",
+    "specs": {
+      "owner": "Patrons Eund",
+      "exhibitions": ["2015 - 2016, Dallas Museum of Art", "2012 - 2015, Tate Liverpool"]
+    },
+    "price_details": { "total": 7140000000, "evaluated": "Auction, 21.05.2015" },
+    "tags": [["RWA", "art"]]
+  },
+  {
+    "title": "ALEX NOW, COMM, 2023",
+    "specs": {
+      "owner": "VIT",
+      "royalty": "10%",
+      "collection": "DIGITAL PEOPLE",
+      "exhibitions": ["2023 - ..., Digital UAE"],
+      "revenue": "26% APY"
+    },
+    "price_details": { "total": 250000, "evaluated": "Expert, 20.05.2015" },
+    "tags": [["digital", "art"]],
+    "history": [
+      {
+        "date": "12.05.2023",
+        "type": "creation",
+        "verified_by": "Ethereum",
+        "content": "<u>ALEX NOW</u> created <u>digital ART</u> \"COMMM\" <br />\"I always believed in God!\"<br />NFT created As single NFT with <u>10% royalty</u> contract"
+      },
+      {
+        "date": "13.05.2023",
+        "type": "owner change",
+        "verified_by": "Ethereum",
+        "content": "<u>ALEX NOW</u> has sold \"COMMI\" to <u>VIT</u> on <u>Opensea</u> for $1000"
+      },
+      {
+        "date": "15.05.2023",
+        "verified_by": "UNI",
+        "content": "<u>VIT</u> added \"COMM\" to <u>DIGITAL PEOPLE</u> COLLECTION"
+      },
+      {
+        "date": "16.05.2023",
+        "type": "valuation",
+        "verified_by": "",
+        "content": "JAY valuated \"COMM\" as $2500"
+      }
+    ],
+    "media_urls": ["https://image.uniqlo.com/UQ/ST3/WesternCommon/imagesgoods/453687/sub/goods_453687_sub7.jpg?width=494"]
+  },
+  {
+    "title": "VENUS de Milo, 150 - 125BC",
+    "specs": {
+      "owner": "FRANCE",
+      "description": "The most famous Venus of Aphrodite",
+      "collection": "TIMELESS"
+    },
+    "price_details": { "is_priceless": true },
+    "tags": [["ARTEFACT"]],
+    "media_urls": [
+      "https://collections.louvre.fr/media/cache/medium/0000000021/0000277627/0000625031_OG.JPG",
+      "https://youtu.be/sT27rGkg4S0?si=4WQKenuAdR5UL9Q6"
+    ]
+  },
+  {
+    "title": "SUSTAINABLE HOME, LODGESEA, 2022",
+    "specs": {
+      "owner": "ALEX NOW",
+      "collection": "TOP LOCATIONS",
+      "revenue": "25% APY"
+    },
+    "limits": "1 of 100 series",
+    "price_details": { "total": 1000000 },
+    "tags": [
+      ["RWA", "HOTEL"],
+      ["dividend", null]
+    ]
+  }
+]

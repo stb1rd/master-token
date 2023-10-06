@@ -28,12 +28,12 @@ export const Search = () => {
   return (
     <>
       <input type="text" value={query} onChange={(e) => getQueryData(e.target.value)} className="border-2 border-black-600" />
-      <Link href={`search/${query}`}>see results</Link>
+      <Link href={`/search/${query}`}>see results</Link>
       <div>quick results</div>
       <ul className="my-auto text-foreground">
         {queryResults?.map((product) => (
           <li key={product.id}>
-            <Link href={`catalog/${product.id}`}>
+            <Link href={`/catalog/${product.id}`}>
               {product.name} , price: {product['price_info.total_price'] / 100}
             </Link>
           </li>

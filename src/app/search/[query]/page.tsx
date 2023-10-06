@@ -10,7 +10,7 @@ export default async function Home({ params }) {
     <ul className="my-auto text-foreground">
       {products?.map((product) => (
         <li key={product.id}>
-          <Link href={`catalog/${product.id}`}>
+          <Link href={`/catalog/${product.id}`}>
             {product.name} , price: {product['price_info.total_price'] / 100}
           </Link>
         </li>

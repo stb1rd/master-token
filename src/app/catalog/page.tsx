@@ -3,15 +3,14 @@ import { cookies } from 'next/headers';
 
 export default async function Index() {
   const supabase = createServerComponentClient({ cookies });
-
-  const { data: items } = await supabase.from('items').select();
+  const { data: products } = await supabase.from('products').select();
 
   return (
     <>
       <ul className="my-auto text-foreground">
-        {items?.map((item) => (
-          <li key={item.id}>
-            {item.name} , price: {item['price_info.total_price'] / 100}
+        {products?.map((product) => (
+          <li key={product.id}>
+            {product.name} , price: {product['price_info.total_price'] / 100}
           </li>
         ))}
       </ul>

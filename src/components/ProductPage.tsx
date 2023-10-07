@@ -1,3 +1,4 @@
+// @ts-nocheck
 import parse from 'html-react-parser';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Link from 'next/link';

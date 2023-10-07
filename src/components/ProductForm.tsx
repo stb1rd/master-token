@@ -2,9 +2,9 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useEffect, useState } from 'react';
 
-const mapObjToString = (obj: any) => (!obj ? '' : JSON.stringify(obj));
+const mapObjToString = (obj) => (!obj ? '' : JSON.stringify(obj));
 
-export const ProductForm = ({ product, onSuccess }: any) => {
+export const ProductForm = ({ product, onSuccess }) => {
   const [productId, setProductId] = useState('');
   const [name, setName] = useState('');
   const [specs, setSpecs] = useState('');

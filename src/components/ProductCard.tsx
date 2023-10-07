@@ -1,8 +1,6 @@
 import Link from 'next/link';
 
 export const ProductCard = ({ product }) => {
-  console.log('product', product);
-
   return (
     <Link href={`/catalog/${product.id}`}>
       <div className="card bg-base-100 shadow-xl flex-row items-start justify-start w-full">

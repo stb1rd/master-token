@@ -5,7 +5,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import { ProductCard } from './ProductCard';
 
-export const SearchPage = ({ defaultQuery, defaultProducts }: any) => {
+export const SearchPage = ({ defaultQuery, defaultProducts }) => {
   const [query, setQuery] = useState(defaultQuery);
   const inputRef = useRef(null);
 

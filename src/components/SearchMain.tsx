@@ -39,7 +39,7 @@ export const Search = () => {
           <button className="btn btn-ghost btn-sm">Art</button>
         </Link>
         <Link href={`/search/SUSTAINABLE HOME`}>
-          <button className="btn btn-ghost btn-sm">Apartments</button>
+          <button className="btn btn-ghost btn-sm">real estate</button>
         </Link>
       </div>
     </>

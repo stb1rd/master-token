@@ -23,7 +23,7 @@ export default async function Home({ params }) {
           {Object.entries(product.specs || {}).map(([key, value]) => {
             let valueString = value;
             if (Array.isArray(value)) {
-              valueString = value.join(', ');
+              valueString = value.join('; ');
             }
 
             return (

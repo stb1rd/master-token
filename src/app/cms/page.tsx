@@ -33,71 +33,77 @@ export default function Index() {
   };
 
   return (
-    <>
-      <div className="prose">
-        <h1>CMS</h1>
-        <div className="overflow-x-auto">
-          <table className="table">
-            <tbody>
-              {products?.map((product) => (
-                <tr key={product.id} className="hover">
-                  <td>{product.name}</td>
-                  <td className="flex gap-1 justify-end">
-                    <button className="btn btn-sm">
-                      <Link href={`/catalog/${product.id}`}>
-                        <LaunchIcon fontSize="small" />
-                      </Link>
-                    </button>
-                    <button
-                      className="btn btn-sm"
-                      onClick={() => {
-                        setSelectedProduct(product);
-                        document.getElementById('product_form').showModal();
-                      }}
-                    >
-                      <EditIcon fontSize="small" />
-                    </button>
-                    <button className="btn btn-sm" onClick={() => handleDelete(product)}>
-                      <DeleteIcon fontSize="small" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        <div className="flex justify-center">
-          <button
-            className="btn btn-wide"
-            onClick={() => {
-              setSelectedProduct(null);
-              document.getElementById('product_form').showModal();
-            }}
-          >
-            Add new
-          </button>
-        </div>
-        <dialog id="product_form" className="modal">
-          <div className="modal-box">
-            <div className="flex items-center justify-between">
-              <h2 className="m-0">Product form</h2>
-              <form method="dialog">
-                <button className="btn">
-                  <CloseIcon />
-                </button>
-              </form>
-            </div>
-            <ProductForm
-              product={selectedProduct}
-              onSuccess={() => {
-                getProducts();
-                document.getElementById('product_form').close();
-              }}
-            />
-          </div>
-        </dialog>
+    <div className="prose mx-auto">
+      <h1>CMS</h1>
+      <div className="text-sm breadcrumbs">
+        <ul>
+          <li>
+            <Link href="/">Home</Link>
+          </li>
+          <li>Content Management</li>
+        </ul>
       </div>
-    </>
+      <div className="overflow-x-auto">
+        <table className="table">
+          <tbody>
+            {products?.map((product) => (
+              <tr key={product.id} className="hover">
+                <td>{product.name}</td>
+                <td className="flex gap-1 justify-end">
+                  <button className="btn btn-sm">
+                    <Link href={`/catalog/${product.id}`}>
+                      <LaunchIcon fontSize="small" />
+                    </Link>
+                  </button>
+                  <button
+                    className="btn btn-sm"
+                    onClick={() => {
+                      setSelectedProduct(product);
+                      document.getElementById('product_form').showModal();
+                    }}
+                  >
+                    <EditIcon fontSize="small" />
+                  </button>
+                  <button className="btn btn-sm" onClick={() => handleDelete(product)}>
+                    <DeleteIcon fontSize="small" />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="flex justify-center">
+        <button
+          className="btn btn-wide"
+          onClick={() => {
+            setSelectedProduct(null);
+            document.getElementById('product_form').showModal();
+          }}
+        >
+          Add new
+        </button>
+      </div>
+      <dialog id="product_form" className="modal">
+        <div className="modal-box">
+          <div className="flex items-center justify-between">
+            <h2 className="m-0">Product form</h2>
+            <form method="dialog">
+              <button className="btn">
+                <CloseIcon />
+              </button>
+            </form>
+          </div>
+          <ProductForm
+            product={selectedProduct}
+            onSuccess={() => {
+              getProducts();
+              document.getElementById('product_form').close();
+            }}
+          />
+        </div>
+      </dialog>
+    </div>
   );
 }

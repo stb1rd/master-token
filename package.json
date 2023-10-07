@@ -9,8 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.12",
+    "@mui/material": "^5.14.12",
     "@supabase/auth-helpers-nextjs": "^0.8.1",
     "@supabase/supabase-js": "^2.38.0",
+    "@tailwindcss/typography": "^0.5.10",
+    "daisyui": "^3.9.2",
     "html-react-parser": "^4.2.2",
     "next": "13.5.4",
     "react": "^18",

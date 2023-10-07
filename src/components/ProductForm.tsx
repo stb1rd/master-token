@@ -1,0 +1,151 @@
+'use client';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { useEffect, useState } from 'react';
+
+const mapObjToString = (obj: any) => (!obj ? '' : JSON.stringify(obj));
+
+export const ProductForm = ({ product, onSuccess }: any) => {
+  const [productId, setProductId] = useState('');
+  const [name, setName] = useState('');
+  const [specs, setSpecs] = useState('');
+  const [priceDetails, setPriceDetails] = useState('');
+  const [tags, setTags] = useState('');
+  const [history, setHistory] = useState('');
+  const [mediaUrls, setMediaUrls] = useState('');
+
+  const supabase = createClientComponentClient();
+  const [formMessage, setFormMessage] = useState();
+
+  useEffect(() => {
+    if (!product) {
+      clearValues();
+    }
+    if (!!product) {
+      setProductId(product.id);
+      setName(product.name);
+      setSpecs(mapObjToString(product.specs));
+      setPriceDetails(mapObjToString(product.price_details));
+      setTags(mapObjToString(product.tags));
+      setHistory(mapObjToString(product.history));
+      setMediaUrls(mapObjToString(product.media_urls));
+    }
+  }, [product]);
+
+  const clearValues = () => {
+    setProductId('');
+    setName('');
+    setSpecs('');
+    setPriceDetails('');
+    setTags('');
+    setHistory('');
+    setMediaUrls('');
+  };
+
+  const handleSubmit = async () => {
+    if (!name) {
+      setFormMessage({ type: 'error', message: 'name is required' });
+      return;
+    }
+    try {
+      setFormMessage(null);
+      const productBody = {
+        name: name,
+        specs: !specs ? null : JSON.parse(specs),
+        price_details: !priceDetails ? null : JSON.parse(priceDetails),
+        tags: !tags ? null : JSON.parse(tags),
+        history: !history ? null : JSON.parse(history),
+        media_urls: !mediaUrls ? null : JSON.parse(mediaUrls),
+      };
+      if (!productId) {
+        const { error } = await supabase.from('products').insert(productBody);
+        if (error) {
+          setFormMessage({ type: 'error', message: error.message });
+        } else {
+          clearValues();
+          onSuccess();
+        }
+      }
+      if (!!productId) {
+        const { error } = await supabase.from('products').update(productBody).eq('id', productId);
+        if (error) {
+          setFormMessage({ type: 'error', message: error.message });
+        } else {
+          clearValues();
+          onSuccess();
+        }
+      }
+    } catch (e) {
+      console.log('e', e);
+    }
+  };
+
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="form-control w-full">
+        <label className="label">
+          <span className="label-text">Name</span>
+        </label>
+        <input type="text" className="input input-bordered w-full" value={name} onChange={(e) => setName(e.target.value)} />
+      </div>
+
+      <div className="form-control w-full">
+        <label className="label">
+          <span className="label-text">Specs</span>
+        </label>
+        <textarea className="input input-bordered w-full" value={specs} onChange={(e) => setSpecs(e.target.value)} />
+      </div>
+
+      <div className="form-control w-full">
+        <label className="label">
+          <span className="label-text">Price details</span>
+        </label>
+        <textarea className="input input-bordered w-full" value={priceDetails} onChange={(e) => setPriceDetails(e.target.value)} />
+      </div>
+
+      <div className="form-control w-full">
+        <label className="label">
+          <span className="label-text">Tags</span>
+        </label>
+        <input type="text" className="input input-bordered w-full" value={tags} onChange={(e) => setTags(e.target.value)} />
+      </div>
+
+      <div className="form-control w-full">
+        <label className="label">
+          <span className="label-text">History</span>
+        </label>
+        <textarea className="input input-bordered w-full" value={history} onChange={(e) => setHistory(e.target.value)} />
+      </div>
+
+      <div className="form-control w-full">
+        <label className="label">
+          <span className="label-text">Media urls</span>
+        </label>
+        <textarea className="input input-bordered w-full" value={mediaUrls} onChange={(e) => setMediaUrls(e.target.value)} />
+      </div>
+
+      {!!formMessage && (
+        <>
+          {formMessage.type === 'error' && (
+            <div className="text-red-600">
+              <p>{formMessage.message}</p>
+            </div>
+          )}
+          {formMessage.type === 'success' && (
+            <div className="text-green-600">
+              <p>{formMessage.message}</p>
+            </div>
+          )}
+        </>
+      )}
+
+      <div className="flex justify-between">
+        <button className="btn" onClick={() => clearValues()}>
+          Clear
+        </button>
+        <button className="btn btn-primary btn-wide" onClick={() => handleSubmit()}>
+          {!productId ? 'Add new' : 'Update'}
+        </button>
+      </div>
+    </div>
+  );
+};

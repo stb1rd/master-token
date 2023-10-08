@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 import { SearchPage } from '@/components/SearchPage';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';

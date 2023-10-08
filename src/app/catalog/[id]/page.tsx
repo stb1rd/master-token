@@ -1,10 +1,24 @@
+'use client';
 import { ProductPage } from '@/components/ProductPage';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { useCallback, useEffect, useState } from 'react';
 
-export default async function Home({ params }) {
+export default function Home({ params }) {
   const supabase = createClientComponentClient();
-  const { data: products } = await supabase.from('products').select().eq('id', params.id);
-  const product = products?.[0];
+  const [product, setProduct] = useState();
+
+  const getProducts = useCallback(async () => {
+    try {
+      const { data: products } = await supabase.from('products').select().eq('id', params.id);
+      setProduct(products?.[0]);
+    } catch (e) {
+      console.log(e);
+    }
+  }, [supabase]);
+
+  useEffect(() => {
+    getProducts();
+  }, []);
 
   return <ProductPage product={product} />;
 }

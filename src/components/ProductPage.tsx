@@ -4,6 +4,10 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Link from 'next/link';
 
 export const ProductPage = ({ product }) => {
+  if (!product) {
+    return null;
+  }
+
   return (
     <>
       <div className="text-sm breadcrumbs">

@@ -1,6 +1,11 @@
 // @ts-nocheck
 import Link from 'next/link';
 
+const USDollar = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+});
+
 export const ProductCard = ({ product }) => {
   return (
     <Link href={`/catalog/${product.id}`}>
@@ -41,7 +46,7 @@ export const ProductCard = ({ product }) => {
             );
           })}
           <div className="text-xl font-bold flex flex-row w-fit gap-4">
-            {!!product.price_details?.total && <p>Price: ${product.price_details.total / 100}</p>}
+            {!!product.price_details?.total && <p>Price: {USDollar.format(product.price_details.total / 100)}</p>}
             {!!product.price_details?.is_priceless && <p>Priceless</p>}
             {!!product.price_details?.evaluated && <p>({product.price_details.evaluated})</p>}
           </div>

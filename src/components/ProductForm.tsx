@@ -2,6 +2,7 @@
 'use client';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useEffect, useState } from 'react';
+import { HistoryForm } from './HistoryForm';
 
 const mapObjToString = (obj) => (!obj ? '' : JSON.stringify(obj));
 
@@ -112,17 +113,12 @@ export const ProductForm = ({ product, onSuccess }) => {
 
       <div className="form-control w-full">
         <label className="label">
-          <span className="label-text">History</span>
-        </label>
-        <textarea className="input input-bordered w-full" value={history} onChange={(e) => setHistory(e.target.value)} />
-      </div>
-
-      <div className="form-control w-full">
-        <label className="label">
           <span className="label-text">Media urls</span>
         </label>
         <textarea className="input input-bordered w-full" value={mediaUrls} onChange={(e) => setMediaUrls(e.target.value)} />
       </div>
+
+      <HistoryForm history={history} setHistory={setHistory} />
 
       {!!formMessage && (
         <>

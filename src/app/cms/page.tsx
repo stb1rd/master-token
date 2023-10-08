@@ -87,7 +87,7 @@ export default function Index() {
         </button>
       </div>
       <dialog id="product_form" className="modal">
-        <div className="modal-box">
+        <div className="modal-box  max-w-3xl">
           <div className="flex items-center justify-between">
             <h2 className="m-0">Product form</h2>
             <form method="dialog">

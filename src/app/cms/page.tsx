@@ -1,6 +1,6 @@
 // @ts-nocheck
 'use client';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClientComponentClient, Session } from '@supabase/auth-helpers-nextjs';
 import Link from 'next/link';
 import LaunchIcon from '@mui/icons-material/Launch';
 import { ProductForm } from '@/components/ProductForm';
@@ -14,6 +14,9 @@ export default function Index() {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
+  const [session, setSession] = useState();
+  console.log('session', session);
+
   const getProducts = useCallback(async () => {
     try {
       const { data } = await supabase.from('products').select();
@@ -23,8 +26,18 @@ export default function Index() {
     }
   }, [supabase]);
 
+  const getSession = useCallback(async () => {
+    try {
+      const { data } = await supabase.auth.getSession();
+      setSession(data);
+    } catch (e) {
+      console.log('e', e);
+    }
+  }, [supabase]);
+
   useEffect(() => {
     getProducts();
+    getSession();
   }, []);
 
   const handleDelete = async (product) => {
@@ -37,7 +50,7 @@ export default function Index() {
     <div className="prose mx-auto">
       <h1>CMS</h1>
       <div className="text-sm breadcrumbs">
-        <ul>
+        <ul className="pl-0">
           <li>
             <Link href="/">Home</Link>
           </li>

@@ -14,9 +14,6 @@ export default function Index() {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const [session, setSession] = useState();
-  console.log('session', session);
-
   const getProducts = useCallback(async () => {
     try {
       const { data } = await supabase.from('products').select();
@@ -26,18 +23,8 @@ export default function Index() {
     }
   }, [supabase]);
 
-  const getSession = useCallback(async () => {
-    try {
-      const { data } = await supabase.auth.getSession();
-      setSession(data);
-    } catch (e) {
-      console.log('e', e);
-    }
-  }, [supabase]);
-
   useEffect(() => {
     getProducts();
-    getSession();
   }, []);
 
   const handleDelete = async (product) => {

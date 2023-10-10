@@ -2,6 +2,7 @@
 import parse from 'html-react-parser';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Link from 'next/link';
+import { USDollar } from './ProductCard';
 
 export const ProductPage = ({ product }) => {
   if (!product) {
@@ -23,7 +24,7 @@ export const ProductPage = ({ product }) => {
       <div className="prose w-full max-w-none">
         <h1 className="mb-0">{product.name}</h1>
         <div className="flex flex-row gap-8">
-          <div className="flex flex-col items-start w-3/4 ">
+          <div className="flex flex-col items-start w-1/2 ">
             <figure className="rounded-xl w-full">
               <img src={product.media_urls?.[0]} className="w-full h-80 bg-gray-50 object-contain" />
             </figure>
@@ -43,7 +44,7 @@ export const ProductPage = ({ product }) => {
               </div>
             )}
           </div>
-          <div className="mt-6 flex flex-col gap-3 w-1/4 ">
+          <div className="mt-6 flex flex-col gap-3 w-1/2 ">
             {Object.entries(product.specs || {}).map(([key, value]) => {
               let valueString = value;
               if (Array.isArray(value)) {
@@ -51,14 +52,14 @@ export const ProductPage = ({ product }) => {
               }
 
               return (
-                <div key={key} className="flex flex-row justify-start w-fit items-baseline gap-1 flex-wrap">
+                <div key={key} className="flex flex-row justify-start w-fit items-baseline gap-1">
                   <p className="text-gray-400 text-sm my-0">{key}</p>
                   <p className="my-0">{valueString}</p>
                 </div>
               );
             })}
             <div className="text-xl font-bold flex flex-row w-fit gap-1 flex-wrap">
-              {!!product.price_details?.total && <p className="my-0">Price: ${product.price_details.total / 100}</p>}
+              {!!product.price_details?.total && <p className="my-0">Price: {USDollar.format(product.price_details.total / 100)}</p>}
               {!!product.price_details?.is_priceless && <p className="my-0">Priceless</p>}
               {!!product.price_details?.evaluated && <p className="my-0">({product.price_details.evaluated})</p>}
             </div>

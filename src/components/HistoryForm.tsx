@@ -14,7 +14,7 @@ export const HistoryForm = ({ history, setHistory }) => {
   return (
     <>
       {historyParsed.map((historyItem, i) => (
-        <div key={historyItem.date} className="flex flex-col">
+        <div key={historyItem.id} className="flex flex-col">
           <div className="flex flex-row gap-2 items-baseline">
             <h2>History entry #{i + 1}</h2>
             <button className="btn btn-sm" onClick={() => handleHistoryEntryDelete(i)}>
@@ -58,8 +58,7 @@ export const HistoryForm = ({ history, setHistory }) => {
             <label className="label">
               <span className="label-text">Content</span>
             </label>
-            <input
-              type="text"
+            <textarea
               className="input input-bordered w-full"
               value={historyItem.content}
               onChange={(e) => handleOnChange(i, 'content', e.target.value)}

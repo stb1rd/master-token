@@ -3,6 +3,7 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useEffect, useState } from 'react';
 import { HistoryForm } from './HistoryForm';
+import { nanoid } from 'nanoid';
 
 const mapObjToString = (obj) => (!obj ? '' : JSON.stringify(obj));
 
@@ -13,7 +14,7 @@ export const ProductForm = ({ product, onSuccess }) => {
   const [priceDetails, setPriceDetails] = useState('');
   const [tags, setTags] = useState('');
   const [history, setHistory] = useState('');
-  const [mediaUrls, setMediaUrls] = useState('');
+  const [mediaUrl, setMediaUrl] = useState('');
 
   const supabase = createClientComponentClient();
   const [formMessage, setFormMessage] = useState();
@@ -28,8 +29,8 @@ export const ProductForm = ({ product, onSuccess }) => {
       setSpecs(mapObjToString(product.specs));
       setPriceDetails(mapObjToString(product.price_details));
       setTags(mapObjToString(product.tags));
-      setHistory(mapObjToString(product.history));
-      setMediaUrls(mapObjToString(product.media_urls));
+      setHistory(mapObjToString(product.history?.map((x) => ({ ...x, id: nanoid() }))));
+      setMediaUrl(product.media_urls?.[0]);
     }
   }, [product]);
 
@@ -40,7 +41,7 @@ export const ProductForm = ({ product, onSuccess }) => {
     setPriceDetails('');
     setTags('');
     setHistory('');
-    setMediaUrls('');
+    setMediaUrl('');
   };
 
   const handleSubmit = async () => {
@@ -56,7 +57,7 @@ export const ProductForm = ({ product, onSuccess }) => {
         price_details: !priceDetails ? null : JSON.parse(priceDetails),
         tags: !tags ? null : JSON.parse(tags),
         history: !history ? null : JSON.parse(history),
-        media_urls: !mediaUrls ? null : JSON.parse(mediaUrls),
+        media_urls: !mediaUrl ? null : [JSON.parse(mediaUrl)],
       };
       if (!productId) {
         const { error } = await supabase.from('products').insert(productBody);
@@ -115,7 +116,7 @@ export const ProductForm = ({ product, onSuccess }) => {
         <label className="label">
           <span className="label-text">Media urls</span>
         </label>
-        <textarea className="input input-bordered w-full" value={mediaUrls} onChange={(e) => setMediaUrls(e.target.value)} />
+        <textarea className="input input-bordered w-full" value={mediaUrl} onChange={(e) => setMediaUrl(e.target.value)} />
       </div>
 
       <HistoryForm history={history} setHistory={setHistory} />

@@ -1,6 +1,6 @@
 // @ts-nocheck
 'use client';
-import { createClientComponentClient, Session } from '@supabase/auth-helpers-nextjs';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Link from 'next/link';
 import LaunchIcon from '@mui/icons-material/Launch';
 import { ProductForm } from '@/components/ProductForm';
@@ -8,12 +8,33 @@ import { useCallback, useEffect, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
-import AuthForm from '@/components/AuthForm';
 
 export default function Index() {
   const supabase = createClientComponentClient();
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [session, setSession] = useState();
+
+  const handleAuth = () => {
+    supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${location.origin}/auth/callback`,
+      },
+    });
+  };
+
+  const getSession = useCallback(async () => {
+    try {
+      const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError) {
+        alert(sessionError);
+      }
+      setSession(sessionData.session);
+    } catch (e) {
+      console.log(e);
+    }
+  }, [supabase]);
 
   const getProducts = useCallback(async () => {
     try {
@@ -26,6 +47,7 @@ export default function Index() {
 
   useEffect(() => {
     getProducts();
+    getSession();
   }, []);
 
   const handleDelete = async (product) => {
@@ -35,79 +57,82 @@ export default function Index() {
   };
 
   return (
-    <AuthForm>
-      <div className="prose mx-auto">
-        <h1>CMS</h1>
-        <div className="text-sm breadcrumbs">
-          <ul className="pl-0">
-            <li>
-              <Link href="/">Home</Link>
-            </li>
-            <li>Content Management</li>
-          </ul>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="table">
-            <tbody>
-              {products?.map((product) => (
-                <tr key={product.id} className="hover">
-                  <td>{product.name}</td>
-                  <td className="flex gap-1 justify-end">
-                    <button className="btn btn-sm">
-                      <Link href={`/catalog/${product.id}`}>
-                        <LaunchIcon fontSize="small" />
-                      </Link>
-                    </button>
-                    <button
-                      className="btn btn-sm"
-                      onClick={() => {
-                        setSelectedProduct(product);
-                        document.getElementById('product_form').showModal();
-                      }}
-                    >
-                      <EditIcon fontSize="small" />
-                    </button>
-                    <button className="btn btn-sm" onClick={() => handleDelete(product)}>
-                      <DeleteIcon fontSize="small" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        <div className="flex justify-center">
-          <button
-            className="btn btn-wide"
-            onClick={() => {
-              setSelectedProduct(null);
-              document.getElementById('product_form').showModal();
-            }}
-          >
-            Add new
-          </button>
-        </div>
-        <dialog id="product_form" className="modal">
-          <div className="modal-box  max-w-3xl">
-            <div className="flex items-center justify-between">
-              <h2 className="m-0">Product form</h2>
-              <form method="dialog">
-                <button className="btn">
-                  <CloseIcon />
-                </button>
-              </form>
-            </div>
-            <ProductForm
-              product={selectedProduct}
-              onSuccess={() => {
-                getProducts();
-                document.getElementById('product_form').close();
-              }}
-            />
-          </div>
-        </dialog>
+    <div className="prose mx-auto">
+      <h1>CMS</h1>
+      <div className="text-sm breadcrumbs">
+        <ul className="pl-0">
+          <li>
+            <Link href="/">Home</Link>
+          </li>
+          <li>Content Management</li>
+        </ul>
       </div>
-    </AuthForm>
+      {!session && (
+        <button type="button" className="btn btn-primary" onClick={() => handleAuth()}>
+          login with google
+        </button>
+      )}
+      <div className="overflow-x-auto">
+        <table className="table">
+          <tbody>
+            {products?.map((product) => (
+              <tr key={product.id} className="hover">
+                <td>{product.name}</td>
+                <td className="flex gap-1 justify-end">
+                  <button className="btn btn-sm">
+                    <Link href={`/catalog/${product.id}`}>
+                      <LaunchIcon fontSize="small" />
+                    </Link>
+                  </button>
+                  <button
+                    className="btn btn-sm"
+                    onClick={() => {
+                      setSelectedProduct(product);
+                      document.getElementById('product_form').showModal();
+                    }}
+                  >
+                    <EditIcon fontSize="small" />
+                  </button>
+                  <button className="btn btn-sm" onClick={() => handleDelete(product)}>
+                    <DeleteIcon fontSize="small" />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="flex justify-center">
+        <button
+          className="btn btn-wide"
+          onClick={() => {
+            setSelectedProduct(null);
+            document.getElementById('product_form').showModal();
+          }}
+        >
+          Add new
+        </button>
+      </div>
+      <dialog id="product_form" className="modal">
+        <div className="modal-box  max-w-3xl">
+          <div className="flex items-center justify-between">
+            <h2 className="m-0">Product form</h2>
+            <form method="dialog">
+              <button className="btn">
+                <CloseIcon />
+              </button>
+            </form>
+          </div>
+          <ProductForm
+            product={selectedProduct}
+            onSuccess={() => {
+              getProducts();
+              document.getElementById('product_form').close();
+            }}
+          />
+        </div>
+      </dialog>
+    </div>
   );
 }

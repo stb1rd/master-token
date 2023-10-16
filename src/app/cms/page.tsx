@@ -72,6 +72,11 @@ export default function Index() {
           login with google
         </button>
       )}
+      {!!session && (
+        <p>
+          <span className="text-gray-400 text-sm">logged as</span> {session!.user.email}
+        </p>
+      )}
       <div className="overflow-x-auto">
         <table className="table">
           <tbody>

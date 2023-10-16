@@ -1,10 +1,29 @@
+'use client';
 // @ts-nocheck
 import parse from 'html-react-parser';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Link from 'next/link';
 import { USDollar } from './ProductCard';
+import { useState } from 'react';
+
+const parseDate = (targetValue) => new Date(targetValue.replaceAll('-', '.').split('.').reverse().join('-'));
 
 export const ProductPage = ({ product }) => {
+  const isHistorySortable = product?.history?.every((x) => !isNaN(parseDate(x.date).getTime()));
+  const [sort, setSort] = useState('asc');
+
+  const sortHelper = (a, b) => {
+    if (!isHistorySortable) {
+      return 0;
+    }
+    if (sort === 'asc') {
+      return parseDate(a.date).getTime() < parseDate(b.date).getTime() ? -1 : 1;
+    }
+    if (sort === 'desc') {
+      return parseDate(b.date).getTime() < parseDate(a.date).getTime() ? -1 : 1;
+    }
+  };
+
   if (!product) {
     return null;
   }
@@ -28,21 +47,6 @@ export const ProductPage = ({ product }) => {
             <figure className="rounded-xl w-full">
               <img src={product.media_urls?.[0]} className="w-full h-80 bg-gray-50 object-contain" />
             </figure>
-            {!!product.tags?.length && (
-              <div className="flex flex-col gap-2 items-center">
-                {product.tags?.map((x) => (
-                  <div key={x} className="flex flex-row gap-2">
-                    {x.map((y) =>
-                      !y ? null : (
-                        <span key={y} className="badge badge-primary badge-lg">
-                          {y}
-                        </span>
-                      )
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
           <div className="mt-6 flex flex-col gap-3 w-1/2 ">
             {Object.entries(product.specs || {}).map(([key, value]) => {
@@ -66,8 +70,36 @@ export const ProductPage = ({ product }) => {
           </div>
         </div>
 
+        <div className="flex justify-between items-center">
+          <div>
+            {!!product.tags?.length && (
+              <div className="flex flex-col gap-2 items-center">
+                {product.tags?.map((x) => (
+                  <div key={x} className="flex flex-row gap-2">
+                    {x.map((y) =>
+                      !y ? null : (
+                        <span key={y} className="badge badge-primary badge-lg">
+                          {y}
+                        </span>
+                      )
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          {!!isHistorySortable && (
+            <div className="flex justify-end items-center gap-4">
+              <span className="text-gray-400 text-sm">sort by</span>
+              <select className="select" onChange={(e) => setSort(e.target.value)}>
+                <option value="asc">newest first</option>
+                <option value="desc">latest first</option>
+              </select>
+            </div>
+          )}
+        </div>
         <div className="flex flex-col gap-8 mt-8">
-          {product.history?.map(({ date, type, verified_by, content }) => (
+          {product.history?.sort(sortHelper).map(({ date, type, verified_by, content }) => (
             <div key={date} className="flex gap-4">
               <p className="w-2/12 my-0 text-gray-400">{date}</p>
               <div className="w-7/12 ">

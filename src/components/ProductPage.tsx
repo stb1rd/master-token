@@ -58,7 +58,7 @@ export const ProductPage = ({ product }) => {
               return (
                 <div key={key} className="flex flex-row justify-start w-fit items-baseline gap-1">
                   <p className="text-gray-400 text-sm my-0">{key}</p>
-                  <p className="my-0">{valueString}</p>
+                  <p className="my-0">{valueString as string}</p>
                 </div>
               );
             })}
